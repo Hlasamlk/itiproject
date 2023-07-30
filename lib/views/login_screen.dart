@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project/components/mybuttons.dart';
-import 'package:project/home_screen.dart';
+import 'package:project/views/components/mybuttons.dart';
+import 'package:project/views/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
