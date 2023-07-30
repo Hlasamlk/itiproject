@@ -1,27 +1,17 @@
-// To parse this JSON data, do
-//
-//     final userModel = userModelFromJson(jsonString);
-
-import 'dart:convert';
-
-List<UserModel> userModelFromJson(String str) => List<UserModel>.from(json.decode(str).map((x) => UserModel.fromJson(x)));
-
-String userModelToJson(List<UserModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class UserModel {
+class ToDoModel {
     int? userId;
     int? id;
     String? title;
     bool? completed;
 
-    UserModel({
+    ToDoModel({
         this.userId,
         this.id,
         this.title,
         this.completed,
     });
 
-    factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+    factory ToDoModel.fromJson(Map<String, dynamic> json) => ToDoModel(
         userId: json["userId"],
         id: json["id"],
         title: json["title"],
@@ -36,4 +26,6 @@ class UserModel {
         "title": title,
         "completed": completed,
     };
+
+  void add(ToDoModel todos) {}
 }
