@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project/models/todo_model.dart';
-import 'package:project/services/todo_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project/views/cubit/cubit/to_dos_cubit.dart';
 
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({super.key});
@@ -10,30 +10,32 @@ class ToDoScreen extends StatefulWidget {
 }
 
 class _ToDoScreenState extends State<ToDoScreen> {
-  List<ToDoModel> todos = [];
-  bool isLoading = true;
-  Future<void> getToDosFromApi() async {
-    todos = await ToDoService().getToDos();
-    isLoading = false ;
-    setState(() {});
-  }
-  @override
-
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getToDosFromApi();
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body:isLoading ? Center(child: CircularProgressIndicator(),): ListView.builder(
-        itemCount: todos.length ,
-       itemBuilder: (BuildContext context, int index){
-        return ListTile(title: Text(todos[index].title ?? "--"),) ;
-       }
-       ),
-    );
+      body: BlocProvider(
+        create: (context) => ToDosCubit(),
+        child: BlocConsumer<ToDosCubit, ToDosState>(
+            listener: (context, state) {
+              if(state is ToDosLoading){
+                print("loading");
+              }
+              // TODO: implement listener
+            },
+            builder: (context, state) {
+              return state is ToDosLoading ? Center(child: CircularProgressIndicator()
+              ): state is ToDosSuccess ?
+              ListView.builder(
+                  itemCount: context.watch<ToDosCubit>().todos.length ,
+                  itemBuilder: (BuildContext context, int index){
+                  return ListTile(title: Text(context.watch<ToDosCubit>().todos[index].title ?? "--")) ;
+                  }
+              ): Center(child: Text("error"),
+                );
+            },
+          )
+        ),
+      );
   }
 }
